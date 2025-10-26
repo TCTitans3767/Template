@@ -470,6 +470,7 @@ public class Drivetrain extends SubsystemBase {
             } else {
                 robotCentricDrive(xVel.getAsDouble(), yVel.getAsDouble(), thetaVel.getAsDouble());
             }
+
             Logger.recordOutput("Drivetrain/drivetrain inputs", Arrays.toString(new Double[] {xVel.getAsDouble(), yVel.getAsDouble(), thetaVel.getAsDouble()}));
         } else {
             joystickDrive(0, 0, 0);
