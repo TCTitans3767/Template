@@ -74,11 +74,11 @@ public class DrivetrainPublisher {
     }
 
     @FunctionalInterface
-    public interface RecieveSupplierValues{
-        void recieve(DoubleSupplier xVelocitySupplier, DoubleSupplier yVelocitySupplier, DoubleSupplier thetaVelocitySupplier, BooleanSupplier inFieldCentric, BooleanSupplier acceptInputsSupplier);
+    public interface ReceiveSupplierValues {
+        void receive(DoubleSupplier xVelocitySupplier, DoubleSupplier yVelocitySupplier, DoubleSupplier thetaVelocitySupplier, BooleanSupplier inFieldCentric, BooleanSupplier acceptInputsSupplier);
     }
 
-    public static void updateDrivetrain(RecieveSupplierValues driveFunction) {
-        driveFunction.recieve(xVelocitySupplier, yVelocitySupplier, thetaVelocitySupplier, inFieldCentricSupplier, acceptInputsSupplier);
+    public static void updateDrivetrain(ReceiveSupplierValues driveFunction) {
+        driveFunction.receive(xVelocitySupplier, yVelocitySupplier, thetaVelocitySupplier, inFieldCentricSupplier, acceptInputsSupplier);
     }
 }

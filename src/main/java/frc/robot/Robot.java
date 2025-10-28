@@ -17,9 +17,12 @@ import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.DriveMotorArrangement;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants.SteerMotorArrangement;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.drive.*;
+import frc.robot.subsystems.robotControl.RobotControl;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -36,6 +39,10 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+
+  public static Drivetrain drivetrain;
+
+  public static final XboxController driverController = new XboxController(Constants.DriverController.PORT);
 
   public Robot() {
     // Record metadata
@@ -97,9 +104,47 @@ public class Robot extends LoggedRobot {
       }
     }
 
+    switch (Constants.currentMode) {
+          case REAL:
+              // Real robot, instantiate hardware IO implementations
+              drivetrain =
+                      new Drivetrain(
+                              new GyroIOPigeon2(),
+                              new ModuleIOTalonFX(TunerConstants.FrontLeft),
+                              new ModuleIOTalonFX(TunerConstants.FrontRight),
+                              new ModuleIOTalonFX(TunerConstants.BackLeft),
+                              new ModuleIOTalonFX(TunerConstants.BackRight));
+              break;
+
+          case SIM:
+              // Sim robot, instantiate physics sim IO implementations
+              drivetrain =
+                      new Drivetrain(
+                              new GyroIO() {},
+                              new ModuleIOSim(TunerConstants.FrontLeft),
+                              new ModuleIOSim(TunerConstants.FrontRight),
+                              new ModuleIOSim(TunerConstants.BackLeft),
+                              new ModuleIOSim(TunerConstants.BackRight));
+              break;
+
+          default:
+              // Replayed robot, disable IO implementations
+              drivetrain =
+                      new Drivetrain(
+                              new GyroIO() {},
+                              new ModuleIO() {},
+                              new ModuleIO() {},
+                              new ModuleIO() {},
+                              new ModuleIO() {});
+              break;
+    }
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
+
+    // initialize default state and drive commands
+    RobotControl.setDriveModeCommand(RobotControl.teleopDriveCommand);
   }
 
   /** This function is called periodically during all modes. */
