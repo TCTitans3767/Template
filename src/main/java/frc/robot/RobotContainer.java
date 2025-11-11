@@ -14,10 +14,20 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.PanicCommand;
+import frc.robot.commands.SetMode;
+import frc.robot.commands.basicCommands.exampleCommands.ExampleCommand;
+import frc.robot.subsystems.robotControl.RobotControl;
+import frc.robot.utils.RobotTransitions;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +42,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+      RobotControl.setPanicCommand(new PanicCommand());
+
+      setUpPathplannerCommands();
 
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
@@ -47,6 +60,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+  }
+
+  private void setUpPathplannerCommands() {
+
+      Command transitTransition = new SetMode(RobotTransitions.transitTransition);
+
+      Map<String, Command> pathPlannerCommands = Map.ofEntries(
+              entry("transitTransition", transitTransition)
+      );
+
+      NamedCommands.registerCommands(pathPlannerCommands);
   }
 
   /**

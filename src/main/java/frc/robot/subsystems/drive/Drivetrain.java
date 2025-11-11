@@ -18,6 +18,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -156,6 +157,8 @@ public class Drivetrain extends SubsystemBase {
                 (targetPose) -> {
                     Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
                 });
+
+
 
         // Configure SysId
         sysId =
@@ -476,4 +479,5 @@ public class Drivetrain extends SubsystemBase {
             joystickDrive(0, 0, 0);
         }
     }
+
 }
