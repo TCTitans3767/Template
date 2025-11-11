@@ -158,8 +158,6 @@ public class Drivetrain extends SubsystemBase {
                     Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
                 });
 
-
-
         // Configure SysId
         sysId =
                 new SysIdRoutine(
@@ -308,6 +306,7 @@ public class Drivetrain extends SubsystemBase {
      * @param speeds Speeds in meters/sec
      */
     public void runVelocity(ChassisSpeeds speeds) {
+        DrivetrainPublisher.setAcceptInputsSupplier(() -> false);
         // Calculate module setpoints
         ChassisSpeeds discreteSpeeds = ChassisSpeeds.discretize(speeds, 0.02);
         SwerveModuleState[] setpointStates = kinematics.toSwerveModuleStates(discreteSpeeds);

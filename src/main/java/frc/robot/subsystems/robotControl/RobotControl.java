@@ -8,8 +8,6 @@ public class RobotControl extends RobotController implements RobotControlIO{
     private final RobotControlIOInputsAutoLogged inputs = new RobotControlIOInputsAutoLogged();
     private final RobotControlIO io = this;
 
-    public static TeleopDrive teleopDriveCommand;
-
     @Override
     public void periodic() {
         updateInputs(inputs);
@@ -23,9 +21,5 @@ public class RobotControl extends RobotController implements RobotControlIO{
         inputs.currentDriveCommand = currentDriveMode.getName();
         inputs.previousDriveCommand = previousDriveMode.getName();
         inputs.currentCommandRunning = currentMode.isScheduled();
-    }
-
-    public void initDriveCommands() {
-        teleopDriveCommand = new TeleopDrive();
     }
 }

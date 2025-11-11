@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.drive.*;
 import frc.robot.subsystems.robotControl.RobotControl;
+import frc.robot.subsystems.robotControl.RobotControlIO;
+import frc.robot.utils.DriveModes;
+import frc.robot.utils.RobotStates;
+import frc.robot.utils.RobotTransitions;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -139,12 +143,18 @@ public class Robot extends LoggedRobot {
               break;
     }
 
+    new RobotControl();
+
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
 
+      RobotStates.initStates();
+      RobotTransitions.initTransitions();
+      DriveModes.initDriveModes();
+
     // initialize default state and drive commands
-    RobotControl.setDriveModeCommand(RobotControl.teleopDriveCommand);
+    RobotControl.setDriveModeCommand(DriveModes.teleopDrive);
   }
 
   /** This function is called periodically during all modes. */
